@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>History Viewer</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div id="history-list" class="list-group container">
+        <div class="row">
+            <div class="list-group-item">
+                <input type="text" v-model="keyword" @keyup="onKeyUp"  placeholder="search word">
+            </div>
+        </div>
+        <div v-for="item in items" class="row list-group-item">
+            <div id="history-{{ item.id }}">
+                <div class="col-xs-10 history-link-block">
+                    <a class="visible-xs-block history-link" href="{{ item.url }}" target="_blank">
+                        <img src="{{ favicon_api_url }}{{item.url}}" alt="{{item.url}}" />
+                        {{ item.title }}
+                    </a>
+                    <a class="visible-xs-block domain" href="{{ item.url }}" target="_blank">{{ item.url }}</a>
+                    <span class="visible-xs-block">{{ item.lastVisitTime | formatDate }}</span>
+                </div>
+                <div class="col-xs-2">
+                    <a id="{{ item.id }}" class="btn btn-default delete-button" href="#" type="button" data-url="{{ item.url }}" data-history-index="{{ $index }}" v-on:click="delete">削除</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script src="popup.js"></script>
+</body>
+
+</html>

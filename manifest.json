@@ -1,15 +1,14 @@
 {
-  "manifest_version": 2,
-  "name": "History",
-  "version": "0.0.1",
-  "description": "Access to browser history",
-  "author": "ffff5912",
-  "background": {
-    "scripts": ["js/vue.min.js", "background.js"]
-  },
-  "permissions": [
-    "history"
-  ],
-  "browser_action": {
-  }
+    "manifest_version": 2,
+    "name": "History",
+    "version": "0.0.1",
+    "description": "Access to browser history",
+    "author": "ffff5912",
+    "background": {
+        "scripts": ["js/vue.min.js", "background.js"]
+    },
+    "permissions": [
+        "history",
+        "chrome://favicon/",
+    ]
 }
