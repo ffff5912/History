@@ -1,15 +1,14 @@
 var App = {
+    histories: {},
     favicon_api_url: 'https://www.google.com/s2/favicons?domain=',
-    functions: {
-        searchHistory: function(seeds, keyword) {
-            if (keyword === '') {
-                return seeds;
-            }
-
-            return seeds.filter(function(item) {
-                return item.title.match(new RegExp(keyword, 'i'));
-            });
+    searchHistory: function(seeds, keyword) {
+        if (keyword === '') {
+            return seeds;
         }
+
+        return seeds.filter(function(item) {
+            return item.title.match(new RegExp(keyword, 'i'));
+        });
     },
     filters: {
         convertDate: function(date) {
@@ -25,38 +24,40 @@ var App = {
 
             return 'タイトルなし';
         }
+    },
+    build: function() {
+        Vue.filter('convertDate', this.filters.convertDate);
+        Vue.filter('extractDomain', this.filters.extractDomain);
+        Vue.filter('renderTitle', this.filters.renderTitle);
+        this.histories = new Vue({
+            el: '#history-list',
+            data: {
+                master_items: [],
+                items: [],
+                keyword: '',
+                favicon_api_url: App.favicon_api_url
+            },
+            methods: {
+                delete: function(e) {
+                    chrome.history.deleteUrl({url: e.target.dataset.url});
+                    App.histories.items.splice(e.target.dataset.historyIndex, 1);
+                },
+                onKeyUp: function(e) {
+                    App.histories.items = App.searchHistory(App.histories.master_items, App.histories.keyword);
+                }
+            }
+        });
     }
 };
 
-Vue.filter('convertDate', App.filters.convertDate);
-Vue.filter('extractDomain', App.filters.extractDomain);
-Vue.filter('renderTitle', App.filters.renderTitle);
-
-var histories = new Vue({
-    el: '#history-list',
-    data: {
-        master_items: [],
-        items: [],
-        keyword: '',
-        favicon_api_url: App.favicon_api_url
-    },
-    methods: {
-        delete: function(e) {
-            chrome.history.deleteUrl({url: e.target.dataset.url});
-            this.items.splice(e.target.dataset.historyIndex, 1);
-        },
-        onKeyUp: function(e) {
-            this.items = App.functions.searchHistory(this.master_items, this.keyword);
-        }
-    }
-});
+App.build();
 
 document.addEventListener('DOMContentLoaded', function() {
     var query = {
         text: ''
     };
     chrome.history.search(query, function(results) {
-        histories.master_items = results;
-        histories.items = results;
+        App.histories.master_items = results;
+        App.histories.items = results;
     });
 });
