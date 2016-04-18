@@ -1,15 +1,27 @@
-function searchHistory(seeds, keyword) {
-    if (keyword === '') {
-        return seeds;
+var App = {
+    favicon_api_url: 'https://www.google.com/s2/favicons?domain=',
+    functions: {
+        searchHistory: function(seeds, keyword) {
+            if (keyword === '') {
+                return seeds;
+            }
+            return seeds.filter(function(item) {
+                return item.title.match(new RegExp(keyword, 'i'));
+            });
+        }
+    },
+    filters: {
+        convertDate: function(date) {
+            return new Date(date);
+        },
+        extractDomain: function(url) {
+            return url.match(/^https?:\/\/[^\/]+/);
+        }
     }
-    return seeds.filter(function(item) {
-        return item.title.match(new RegExp(keyword, 'i'));
-    });
-}
+};
 
-Vue.filter('formatDate', function(date) {
-    return new Date(date);
-});
+Vue.filter('convertDate', App.filters.convertDate);
+Vue.filter('extractDomain', App.filters.extractDomain);
 
 var histories = new Vue({
     el: '#history-list',
@@ -17,7 +29,7 @@ var histories = new Vue({
         master_items: [],
         items: [],
         keyword: '',
-        favicon_api_url: 'https://www.google.com/s2/favicons?domain='
+        favicon_api_url: App.favicon_api_url
     },
     methods: {
         delete: function(e) {
@@ -25,7 +37,7 @@ var histories = new Vue({
             this.items.splice(e.target.dataset.historyIndex, 1);
         },
         onKeyUp: function(e) {
-            this.items = searchHistory(this.master_items, this.keyword);
+            this.items = App.functions.searchHistory(this.master_items, this.keyword);
         }
     }
 });

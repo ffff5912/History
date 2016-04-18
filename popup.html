@@ -20,8 +20,8 @@
                         <img src="{{ favicon_api_url }}{{item.url}}" alt="{{item.url}}" />
                         {{ item.title }}
                     </a>
-                    <a class="visible-xs-block domain" href="{{ item.url }}" target="_blank">{{ item.url }}</a>
-                    <span class="visible-xs-block">{{ item.lastVisitTime | formatDate }}</span>
+                    <a class="visible-xs-block domain" href="{{ item.url }}" target="_blank">{{ item.url | extractDomain }}</a>
+                    <span class="visible-xs-block">{{ item.lastVisitTime | convertDate }}</span>
                 </div>
                 <div class="col-xs-2">
                     <a id="{{ item.id }}" class="btn btn-default delete-button" href="#" type="button" data-url="{{ item.url }}" data-history-index="{{ $index }}" v-on:click="delete">削除</a>
