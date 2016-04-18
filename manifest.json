@@ -5,7 +5,7 @@
     "description": "Access to browser history",
     "author": "ffff5912",
     "background": {
-        "scripts": ["js/vue.min.js", "background.js"]
+        "scripts": ["background.js"]
     },
     "permissions": [
         "history",
