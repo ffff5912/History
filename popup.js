@@ -5,6 +5,7 @@ var App = {
             if (keyword === '') {
                 return seeds;
             }
+
             return seeds.filter(function(item) {
                 return item.title.match(new RegExp(keyword, 'i'));
             });
@@ -16,12 +17,20 @@ var App = {
         },
         extractDomain: function(url) {
             return url.match(/^https?:\/\/[^\/]+/);
+        },
+        renderTitle: function(title) {
+            if (title.length > 0) {
+                return title;
+            }
+
+            return 'タイトルなし';
         }
     }
 };
 
 Vue.filter('convertDate', App.filters.convertDate);
 Vue.filter('extractDomain', App.filters.extractDomain);
+Vue.filter('renderTitle', App.filters.renderTitle);
 
 var histories = new Vue({
     el: '#history-list',

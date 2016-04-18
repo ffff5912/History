@@ -18,7 +18,7 @@
                 <div class="col-xs-10 history-link-block">
                     <a class="visible-xs-block history-link" href="{{ item.url }}" target="_blank">
                         <img src="{{ favicon_api_url }}{{item.url}}" alt="{{item.url}}" />
-                        {{ item.title }}
+                        {{ item.title | renderTitle }}
                     </a>
                     <a class="visible-xs-block domain" href="{{ item.url }}" target="_blank">{{ item.url | extractDomain }}</a>
                     <span class="visible-xs-block">{{ item.lastVisitTime | convertDate }}</span>
