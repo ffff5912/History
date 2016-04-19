@@ -9,6 +9,12 @@
     },
     "permissions": [
         "history",
-        "chrome://favicon/",
-    ]
+        "chrome://favicon/"
+    ],
+    "browser_action": {
+        "default_title": "History",
+        "default_popup": "popup.html",
+        "default_icon": {
+        }
+    }
 }
